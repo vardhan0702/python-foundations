@@ -1,0 +1,9 @@
+id,name,status
+TC01,Login,Passed
+Tc02,Logout,Failed
+TC03,Payment,Passed
+TC04,Payment,Passed
+TC05,Payment,Passed
+TC06,Order, Blocked
+TC07,Checkout,InProgress
+TC08,Profile,NotApplicable

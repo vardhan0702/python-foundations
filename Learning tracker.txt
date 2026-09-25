@@ -1,0 +1,633 @@
+AI Test :
+==========================
+Day 1 :
+==========================
+1. Installed the python version is 3.14
+2. Installed the vs code and checked the version of python using command python --version.
+3. Written the basin hellpo world program using and executed it.
+	file name : hello.py
+	
+	print("I am Govardhan, I have started today")
+	
+	command to  this program in terminal 
+	python hello.py
+	
+4. Checked the pip --version and it came up as 3.11.4 this pip is a like a playstore in the smartphone where we can install supporting features in python environment like, when we want
+	to work in excels, pandas etc.
+
+==========================	
+Day 2 :
+==========================
+1. Learnt what is variable means?
+	-- Variable is a box which holds the data.
+2. Types of variables 
+	1. String
+	2. Integer
+	3. Float
+	4. Boolean.
+3. Use of str() function to conver the number into string of characters so that we can attach that to text.
+
+==========================
+Day 3 :
+==========================
+1. List : Collection of variables stored in a single variable.
+2. Loop used to read the vaiables stored in the list
+	data = [1,2,3,4]
+		for item in data:
+			print("Items:", item)
+			
+3. If we want to print the position of items the use enumerate()
+	data =["A","B","C","D"]
+		for index, item in enumerate(data,1):
+			print(index,": ", item)
+			
+4. If we want to use two lists and loop then use as below :
+	list1 =["Login","Logout", "Add to cart", "payment"]
+	list2 = ["Pass", "Fail", "Pass", "Fail"]
+	
+		for index, (item1, item2) in enumerate(zip(list1,list2),1):
+			print(index,": ",item1"--> ",result )
+
+==========================			
+Day 4 :
+==========================
+1. Dictionary :
+A dictionary stores the items using name, user can access them with the help of key we define.
+whereas list stores the items using position and we can access then with the help of index.
+
+testcase = {
+	"id" : "001",
+	"name": "Govardhana",
+	"Age" : 37
+}
+
+print(testcase)
+print(testcase["name"])
+
+2. we can also do the looping using only key, value and both
+------------------------------
+#using only key
+testcase = {
+	"id" : "001",
+	"name": "Govardhana",
+	"Age" : 37
+}
+
+for key in testcase:
+	print(key)
+	
+------------------------------	
+3. #using only value
+testcase = {
+	"id" : "001",
+	"name": "Govardhana",
+	"Age" : 37
+}
+
+for value in testcase.values():
+	print(value)
+------------------------------
+4. #using both key and value
+testcase = {
+	"id" : "001",
+	"name": "Govardhana",
+	"Age" : 37
+}
+
+for key,value in testcase.items():
+	print(key, " : ", value)
+------------------------------	
+5. We can add and delete the dictionary using below :
+	# to add an item into the existing dictionary then use
+	
+	testcase["salary"]:99999.36
+	
+	#to delete the item from the dictinary
+	del testcase["age"]
+------------------------------------------------------------	
+6. loop the list of dictinary using for 
+
+testcases =[
+	{"TestCase_id": "TC001", TestCaseTitle : "Login", "priority" : "High", "Status": "Completed"},
+	{"TestCase_id": "TC002", TestCaseTitle : "Logout", "priority" : "Medium", "Status": "InProgress"},
+	{"TestCase_id": "TC003", TestCaseTitle : "Payment", "priority" : "High", "Status": "Completed"},
+	{"TestCase_id": "TC004", TestCaseTitle : "Order", "priority" : "High", "Status": "Completed"}
+	
+]
+
+for testcase in testcases:
+	print(testcase["TestCase_id"], "|", testcase["TestCaseTitle"], "|", testcase["priority"],"|", testcase["Status"])
+	
+# see that we are not using any key and pair for lists it is simple, where as in dictionary we shuold use key and pair
+
+1. What is a dictionary in one sentence?
+	--A dictionary is a place where user can store the items by it's name and can be accessed by using the key and value pair.
+	
+2. What is the difference between .values() and .items()?
+	--values() is mandatory function used to access the values of dictionary and .items() is mandatory function used to access both key and value in the dictionary
+	
+3. When would you use a list of dictionaries instead of a dictionary of dictionaries?
+	--list of dictionaries can be used in a place where outerkey is not neccessary to be used instead we can directly access the value using the dictionary key directly, 
+	whereas in dictionary of dictionaries one should always carry the outer label though while accessing the values inside it, we ignore that and depends on value[]
+
+==========================
+Day 5 :
+==========================
+1. Functions :
+# evaluate the test_run using the list of dictionary.
+ def eval_testrun(testcases):
+	Total = len(testcases)
+	Passed = 0
+	Failed = 0
+	
+	for testcase in testcases:
+		if testcase["status"]== "Passed":
+			Passed =Passed+1
+		elif testcase["status"] == "Failed":
+			Failed = Failed+1
+	return {"Total" : Total, "Passed" : Passed, "Failed" : Failed}
+	
+
+ eval = eval_testrun([
+	{"id": "TC001", "name": "Login ", "status": "Passed", "priority": "High"},
+    {"id": "TC002", "name": "Logout", "status": "Failed", "priority": "Medium"},
+    {"id": "TC003", "name": "Change Password", "status": "Failed", "priority": "Low"},
+    {"id": "TC004", "name": "Payment", "status": "Passed", "priority": "Low"},
+    {"id": "TC005", "name": "Order", "status": "Passed", "priority": "Low"}
+ ])
+ 
+ print("Total number of test cases ", eval["Total])
+ print("Total number of test cases ", eval["Passed])
+ print("Total number of test cases ", eval["Failed])
+ 
+ 
+-----------------------------------------------------------------
+1. What is a function in one sentence?
+	--A function is block of code written once and reused in many places there by reducing the writing of code redundantly.
+	
+2. What is the difference between print() inside a function and return?
+	--print() is for the user visualization where as return is for the function way of reading the data.
+	
+3. What does += do?
+	--+= is not always +1. It adds whatever is on the right side. a += 5 means a = a + 5. a += 1 means a = a + 1. The right side can be any number.
+	
+4. Why did we return a dictionary instead of printing inside the function?
+	--Because we wanted the function to be reused in many places so we want that block to be generic to handle any parameters from outside the function via function call
+	
+==========================
+Day 6 :
+==========================
+
+--------------------------
+1. If/Else and Logic
+---------------------------
+pass_percentage =55
+
+if pass_percentage>=80:
+    print("SSTABLE — Safe to release")
+elif pass_percentage>=60:
+    print("WARNING — Review before release")
+else:
+    print("CRITICAL — Do not release")
+	
+--------------------------
+2. If/Else and Logic
+---------------------------
+and  # both conditions must be true
+or   # at least one condition must be true
+not  # reverses the condition
+
+
+testcases [
+	{"id":1, "name":"testcase01", "status":"passed"},
+	{"id":2, "name":"testcase02", "status":"failed"},
+	{"id":3, "name":"testcase03", "status":"passed"},
+	{"id":4, "name":"testcase04", "status":"passed"},
+	{"id":5, "name":"testcase05", "status":"failed"},
+]
+
+def eval_test_pass(testcases):
+	total_testcases = len(testcases)
+	passed=0
+	failed=0
+	
+	for testcase in testcases:
+		if testcase["status"]=="passed":
+			passed+=1
+		elif testcase["status"]=="failed"
+			failed+=1
+	passpercentage = (passed/total_testcases)*100
+	
+	if passpercentage>=90 and failed==0:
+		final_output = "GREEN — Ship it"
+	elif passpercentage>=75 and failed <=2:
+		final_output = "AMBER — Review required"
+	else:
+		final_output = "RED — Do not ship"
+		
+	return passpercentage,total_testcases,final_output,passed,failed,
+	
+output = eval_test_pass(testcases)
+print("Total testcases : ",output[1])
+print("Total passed test cases :",output[3] )
+print("Total failed test cases :",output[4] )
+print("total percentage :",output[0] )
+
+
+==========================
+Day 7 :
+==========================
+Day 7 — Reading and Writing Files
+
+files= open("notes.txt","w")
+files.write("This is a test file for wrting and reading purpose")
+files.close()
+
+files= open("notes.txt","r")
+content = files.read()
+print(content)
+files.close()
+
+#append mode.
+files = open("notes.txt","a")
+files.write("\nThis is an additional line.")
+files.close()
+
+files =open("notes.txt","r")
+content = files.read()
+print(content)
+files.close()
+
+-----------------------------------------------------------------
+###Use the file concept above and use it in eval test fucntions
+-----------------------------------------------------------------
+import csv
+
+def readcsvfile(filename):
+    with open(filename,"r") as file :
+        reader = csv.DictReader(file)
+        Passed=0
+        Failed=0
+        Total=0
+        
+        for row in reader:
+            if row["status"]=="Passed":
+                Passed+=1
+            elif row["status"]=="Failed":
+                Failed+=1
+            Total+=1
+        Percentage = (Passed/Total)*100
+    return {"Passed" : Passed, "Failed":Failed, "Total":Total, "Percentage":Percentage}
+
+eval = readcsvfile("testdata.txt")
+print("Total test cases passed",eval["Passed"])
+print("Total test cases failed",eval["Failed"])
+print("Percentage test cases passed",eval["Percentage"])
+
+
+
+
+==========================
+Day 8 :
+==========================
+
+pip and Installing Libraries
+
+to install any softwares
+
+pip install requests
+
+to create virtual environment.
+
+pythom -m venv myenv
+
+to activate the created virtual environment
+
+myscripts\Scripts\activate
+
+
+====================================================
+Day 9 — Classes and Objects (just enough)
+====================================================
+ANALOGY
+
+Think of a class like your test case template — the structure that defines what fields every test case has: id, name, status, priority.
+
+An object is one actual filled-in test case built from that template — like TC001, Login, Pass, High.
+
+The template is the class. Each specific test case is an object.
+
+
+class testCases:
+    def __init__(self, id, name, status):
+        self.id = id
+        self.name = name
+        self.status = status
+
+    def mark_as_blocked(self):
+        self.status = "Blocked"
+
+    def show(self):
+        print("Test Case ID: ","--",self.id, "Test Case Name: ","--",self.name, "Test Case Status: ","--",self.status)
+
+tc1=testCases(1,"Login ","Passed")
+tc2=testCases(2,"Logout ","Failed")
+
+tc1.mark_as_blocked()
+tc1.show()
+tc2.show()
+
+
+self is always called along with the object which it is going to affect so it is always linked to object level and not the  class as a whole.
+
+What is a class and what is an object — in one sentence each?
+What does self refer to?
+What does __init__ do and when does it run?
+
+1. A class is a blueprint, it is kind of testcase template , a structure that defines what fields test case has like, ID, Name, Status. whereas object is filled in testcase out of template like TC01, LOGIN, PASSED.
+2. Self always refers to the object level and the action what we do will affect to the attached object in the class and not the all objects inside the class. example : tc1.mark(self) : self.status= "blocked" this will impact the tc1 object alone and do not interfere with other objects
+3. __init__ method used to assign the values which are passed at the time of object creation to the class objects
+
+====================================================
+Day 10 — Error Handling and Debugging
+====================================================
+#with try and except block
+try:
+    result =10/0
+except ZeroDivisionError:
+    print("Error: Division by zero is not allowed.")
+print("Program continues to run after handling the exception." )
+
+print("--------------------------------------------")
+# without try and except block
+#result1 = 5 / 0
+#print(result1)
+
+#catching different types of errors separately.
+try:
+    value = 12/0
+except ValueError:
+    print("Error: Invalid value. Please enter a valid integer.")
+except ZeroDivisionError:
+    print("Error: Division by zero is not allowed.")
+
+print("--------------------------------------------")
+
+
+print("#implement this try and except while reading files.")
+#implement this try and except while reading files.
+
+try:
+    file = open("non_existent_file.txt", "r")
+    content = file.read()
+    print(content)
+except FileNotFoundError:
+    print("Error: The file does not exist.")
+	
+	#################################
+import csv
+
+def readcsvfile(filename):
+    try:
+        with open(filename, "r") as file:
+            reader = csv.DictReader(file)
+            passed=0
+            failed=0
+            percentage=0
+            total=0
+            for row in reader:
+                if row["status"]=="Passed":
+                    passed+=1
+                elif row["status"]=="Failed":
+                    failed+=1
+                total+=1
+                percentage= (passed/total)*100
+        return {"FileFound": "True","Passed" : passed, "Failed":failed, "Total":total, "Percentage":percentage}
+    except FileNotFoundError:
+        print("Error: The file does not exist.")
+        return {"FileFound": "False","Passed" : 0, "Failed":0, "Total":0, "Percentage":0}  
+
+eval= readcsvfile("testdata.txt")
+print("File Found:", eval["FileFound"])
+print("Total test cases passed",eval["Passed"])
+print("Total test cases failed",eval["Failed"])
+print("Percentage test cases passed",eval["Percentage"])  
+
+What does try/except actually do?
+Why did your first attempt at wrapping the CSV read fail before you moved open() inside try?
+Why is returning a fake zero-filled dictionary risky when a file is missing?
+What did you add to fix that risk?
+
+1. try/except are the safety net to catch the errors so that program can continue even when error occurs rather than crashing as soon as it encounters error.
+2. Because code written outside the try block is not protected by try and except block hence it failed and ended the execution abruptly.
+3. If say, file exists but no data for actual keys then there is chance of false assumption that, file is missing.
+4. So, I have added the flag to test the presence of file inside the except block so that user knows if file not found false then zero's makes sense
+
+====================================================
+Day 11 — Pandas Basics
+====================================================
+
+Everything you've done so far with CSVs — opening, looping, counting — pandas does in far fewer lines, and gives you powerful built-in tools for filtering, statistics, and analysis.
+
+Pandas introduces a DataFrame — think of it as an entire spreadsheet loaded into Python, rows and columns, that you can query instantly.
+
+
+to install 
+
+Remember this for the rest of the roadmap — from now on, always use:
+
+python -m pip install <library>
+
+import pandas as pd
+df = pd.read_csv("testdata.txt")
+print(df)
+print(df.head())
+print(df.tail())
+print(df.describe())
+
+
+passed_only = df[df["status"]=="Passed"]
+print(passed_only)
+print("----------------------")
+print(df["status"]=="Passed")
+print("----------------------")
+print(df[df["status"]=="Passed"])
+
+#use the pandas library for counting passed, failed, total, percentage from test data file without using loops.
+print("use the pandas library for counting passed, failed, total, percentage from test data file without using loops.")
+df= pd.read_csv("testdata.txt")
+passed = len(df[df["status"]=="Passed"])
+failed = len(df[df["status"]=="Failed"])
+total = len(df)
+percentage_passed = (passed / total) * 100
+
+print("Passed:", passed, "Failed:", failed, "Total:", total, "Percentage Passed:", percentage_passed)
+
+What is a DataFrame in one sentence?
+What is the difference between .head(), .tail(), and print(df)?
+What does df["status"] == "Passed" actually return, before you wrap it in df[...]?
+Why did id show frequency 1 in .describe()?
+
+1. Dataframe is kind of spreadsheet where our entire data is loaded into the python in the form of rows and columns using which user can perform the various operations without relying on traditional loops and manual going to check for each and every row.
+2. .head() gives top 5 rows from the data frame, .tail() gives the last 5 rows from the data frame and print(df) prints all the data from dataframe.
+3. df["status"]=="Passed" will give all boolean values for the row status and when we wrap it in df[] again it will discard all false and filters only true.
+4. because each and every value in the id column are unique and hence frequency of appearnce is 1 always
+    
+====================================================
+Day 12 — JSON
+====================================================
+
+JSON stands for JavaScript Object Notation. Don't worry about the name — what matters is this: every AI API you'll ever call — Claude, OpenAI, Hugging Face — sends and receives data in JSON format.
+
+Here's the good news. You already know JSON. It looks almost exactly like a Python dictionary.
+
+json
+{
+    "id": "TC001",
+    "name": "Login",
+    "status": "Passed"
+}
+
+
+import json
+testcases ={"id": 1, "name": "John", "age": 30, "city": "New York"}
+jsonString = json.dumps(testcases)
+print(jsonString)
+print(type(jsonString))
+
+
+python_dict = json.loads(jsonString)
+print(python_dict)
+print(type(python_dict))    
+
+What is JSON and why does every AI API use it?
+What does json.dumps() do? What does json.loads() do?
+What's the actual difference between a Python dictionary and a JSON string, even though they look the same when printed?
+Why did pyDict["summary"][1] fail?
+
+1. JSON is javascript Object Notation. It is universal data format understood by all the systems
+2. json.dumps() converts the data into the plain text and json.loads() converst the data into python dictionary
+3. Pyhton dictionary is the way of understanding the data which can be understood only python where as for other systems it has to be simple plain text converted into the json so all other systems can understand.
+4. I was treating the summary as list where as it is dictionary where one has to pass the key not the index
+
+====================================================
+Day 13 — HTTP and the requests library
+====================================================
+
+
+1. What are the 4 core parts of any API request?
+	--URL : it is a like address where to look.
+	--Method : what are we doing here? Are we sending the data (post) ? are we requesting the data ? (get)
+	--Headers : it is metadata of the requests like authentication of requests, type of data we are sending etc.
+	--Body : Required for POST, what are we sending to the address.
+2. What's the difference between data=data and json=data in a POST request?
+	--data=data is just plain dictionary sending to the server where it wont be udnerstood as this needs to be translated to the json, hence we use json=data where actual transform happens
+	  our python dictionary ise transformed to json foramt along with that it attaches the neccessary header to it automatically.
+	
+3. Why did response.json without () give you something strange, and what did response.json() with () actually do?
+	that just says method exists and doesn't do anything untill user puts ()
+4. Why should you never rely on dictionary key order?
+	dictionary will not preserve the order of data hence we always rely on the key rather than order.
+	
+
+{
+	'args': {},
+	'data': '{"id": "O0041", "name": "Govardhana", "Role": "Senior AI Model Evaluator"}',
+	'files': {},
+	'form': {},
+	'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Content-Length': '74', 'Content-Type': 'application/json', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.34.2', 'X-Amzn-Trace-Id': 'Root=1-6ab3f87c-2c983fea76cd9fe45d97bcb4'},
+	'json': {'Role': 'Senior AI Model Evaluator', 'id': 'O0041', 'name': 'Govardhana'},
+	'origin': '49.37.176.184', 'url': 'https://httpbin.org/post'
+}
+
+import requests
+url = "https://httpbin.org/post"
+data = {"id":"O0041","name":"Govardhana","Role":"Senior AI Model Evaluator"}
+
+response = requests.post(url, json=data)#json=data, we are telling the system that we are sending the data which is json foramt, the one we are using in "data" is python dictionary
+print(response.status_code)
+
+result =response.json()
+print(result["json"]["name"]) #here we are converting the plain json string back to the pythin dictionary
+
+
+====================================================
+Day 14 : Mini Project : 
+====================================================
+
+import json
+testcases = [
+    {"id":"001","Name":"Login","status":"passed"},
+    {"id":"002","Name":"HomePage","status":"failed"},
+    {"id":"003","Name":"Order","status":"passed"},
+    {"id":"004","Name":"CheckOut","status":"failed"},
+    {"id":"005","Name":"Payment","status":"passed"},
+    {"id":"006","Name":"Profile","status":"blocked"},
+    {"id":"007","Name":"cards","status":"Not Applicable"},
+    {"id":"008","Name":"summary","status":"In Progress"},
+
+]
+
+def evaltest(result):
+    try:
+        passed = 0
+        failed = 0
+        total = 0
+        percentage = 0
+
+        for item in result:
+            if item["status"]=="passed":
+                passed+=1
+            elif item["status"]=="failed":
+                failed+=1
+            total+=1
+        percentage = ((passed+failed)/total)*100
+    except ZeroDivisionError:
+     print("Cannot divide by zero")
+
+    return {"Passed":passed, "Failed":failed, "Total": total, "Percentage":percentage}
+
+    
+
+eval= evaltest(testcases)
+with open("eval_result.json","w") as file:
+    json.dump(eval,file)
+
+with open("eval_result.json","r") as file:
+    loaded_report = json.load(file)
+    
+print("Percentage is -- ",loaded_report["Percentage"])
+print("Total test cases passed : ", eval["Passed"])
+print("Total test cases failed : ", eval["Failed"])
+print("Total test cases  : ", eval["Total"])
+print("Percentage of test cases are passed : ", eval["Percentage"])
+
+1. What's the difference between json.dump() and json.dumps()?
+	json.dump() dumps the data into the file whereas json.dumps() converst the json data into strings.
+	
+2. What's the difference between json.load() and json.loads()?
+	json.load() loads the file from the drive whereas json.loads() converst the plain strings into python dictionary
+	
+3. When does try/except actually get triggered in your function?
+	only when my dictionary is blank.
+	
+4. What was the single most common bug type you fought with today?
+	indentation
+	
+====================================================
+Day 15 : Git & GitHub?
+====================================================
+1. CONCEPT
+
+Every script you've written so far lives only on your laptop. If your laptop dies tomorrow, all 14 days of work disappear. 
+Git solves this by tracking every change you make to your code over time — like a save history for your entire project. 
+GitHub is where you store that history online, so it survives, and so you can show it to anyone as a portfolio.
+
+Three core actions:
+
+git add — mark files as ready to be saved
+git commit — actually save a snapshot, with a message describing what changed
+git push — upload that snapshot to GitHub
+
+
+
