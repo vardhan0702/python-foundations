@@ -1303,3 +1303,16 @@ print("Scorecard saved to eval_scorecard.json")
 	
 4. Looking back across all of Phase 1 — name one moment where you predicted something wrong, and what you learned from being wrong.
 	 I predicted that, based on the bleu scores I did not come to conclusion that, LLM models are performing poorly rather I looked inward and checked the user's dataset and came to know that, this has to be improved inorder to judge the model's response rather than simply looking at the scores and coming to conclusions
+	 
+===============================================
+Day 27: RAGAS, Evaluating a RAG Pipeline
+===============================================
+Till today, precision , recall and BLEU and ROUGUE metrics depends on text overlap, though users reference answers or text are correct or framed in different words. it compares them with the claude's response and gives the less precision due to less overlap of words. this gives weak evaluation scores thiugh users reference answers are valid.
+This problem can be solved by RAGAS, where scoring can be done using the actual meaning of the chunks instead of text overlap.
+
+Metrics : 
+1. Context precision : out of retrived chunks how many are actually usefull?
+2. Context Recall : Did retrieval fetch everything needed to answer.
+3. Faithfullness : is every claim in the answer is supported by retrived context?
+4. Answer relevancy : Does the answer addresses the actual question asked?
+

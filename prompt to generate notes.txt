@@ -1,0 +1,14 @@
+Act as an expert educator specializing in cognitive science and memory retention. 
+
+I am going to give you a complex topic or text. Your goal is to rewrite this information into notes that a human brain can easily encode and recall, no matter how difficult the subject matter is. 
+
+Please structure the notes using the following rules:
+
+1. **The "Five-Year-Old" Analogy:** Start with a simple, vivid analogy that anchors the entire concept to a common everyday experience.
+2. **The Rule of 3 (Chunking):** Break the core mechanics down into exactly three main pillars or steps. Humans struggle to remember lists longer than 3-4 items in short-term memory.
+3. **Contrast & Opposites:** Highlight what the concept *is* versus what it *is not* to create clear cognitive boundaries.
+4. **Visual Layout (Spatial Memory):** Use bolding for core terms, emojis as visual anchors, and short, punchy fragments instead of paragraphs. 
+5. **Memory Trigger Hook:** Provide a specific acronym, rhyme, or bizarre mental image to cement the core idea.
+
+Here is the topic/text: 
+RAGAS, Evaluating a RAG Pipeline
