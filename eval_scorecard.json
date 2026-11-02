@@ -1,0 +1,89 @@
+[
+    {
+        "question": "In software testing,what is a bug ?",
+        "reference_answer": "A bug is deviation from expected and actual behvaior of the system",
+        "claude_response": "# What is a Bug in Software Testing?\n\nA **bug** (also called a defect, fault, or error) is a flaw in software that causes it to produce incorrect or unexpected results, or to behave in unintended ways.\n\n## Key Characteristics:\n\n- **Deviation from requirements**: The software doesn't do what it's supposed to do\n- **Unexpected behavior**: The software does something it shouldn't\n- **Causes failure**: Prevents the software from functioning correctly\n\n## Common Types of Bugs:\n\n1. **Functional bugs** - Features don't work as intended\n2. **Logic errors** - Incorrect algorithms or calculations\n3. **Syntax errors** - Code written incorrectly\n4. **Performance bugs** - Software runs too slowly\n5. **Security vulnerabilities** - Weaknesses that can be exploited\n6. **UI/UX bugs** - Interface problems or display issues\n7. **Compatibility bugs** - Software doesn't work on certain platforms/browsers\n\n## Example:\nIf a login button is supposed to direct users to their dashboard but instead shows an error message, that's a bug.\n\n## Severity Levels:\n- **Critical**: System crash, data loss\n- **Major**: Key feature broken\n- **Minor**: Small inconvenience\n- **Trivial**: Cosmetic issues\n\nThe goal of software testing is to identify and report these bugs before the software reaches end users.",
+        "evaluation_result": {
+            "overlap_words": [
+                "system",
+                "the",
+                "a",
+                "is",
+                "from",
+                "and",
+                "bug",
+                "of"
+            ],
+            "precision": 0.058823529411764705,
+            "recall": 0.6666666666666666
+        }
+    },
+    {
+        "question": "In software testing, what is a defect ?",
+        "reference_answer": "When bug reported by tester and accepted by development team",
+        "claude_response": "# What is a Defect in Software Testing?\n\nA **defect** (also called a **bug**, **fault**, or **issue**) is a flaw or imperfection in software that causes it to produce incorrect or unexpected results, or to behave in unintended ways.\n\n## Key Characteristics:\n\n- **Deviation from requirements** - The software doesn't work as specified\n- **Deviation from expected behavior** - It doesn't meet user expectations\n- **Causes failure** - It prevents the software from functioning properly\n\n## Common Examples:\n\n- **Functional defects** - A button doesn't perform its intended action\n- **Logic errors** - Incorrect calculations or processing\n- **UI defects** - Misaligned elements, broken links\n- **Performance issues** - Slow response times, crashes\n- **Security vulnerabilities** - Unauthorized access points\n\n## Defect vs. Related Terms:\n\n| Term | Definition |\n|------|------------|\n| **Error** | Human mistake made during coding |\n| **Defect/Bug** | Flaw in the code itself |\n| **Failure** | When the defect causes the system to malfunction |\n\n## Why Defects Matter:\n\n- Impact user experience\n- Can cause financial losses\n- May create security risks\n- Damage reputation\n- Require time and resources to fix\n\nThe goal of software testing is to **identify and document defects** before the software reaches end users, allowing developers to fix them early in the development cycle.",
+        "evaluation_result": {
+            "overlap_words": [
+                "when",
+                "development",
+                "and"
+            ],
+            "precision": 0.022388059701492536,
+            "recall": 0.3333333333333333
+        }
+    },
+    {
+        "question": "In software testing, what is a error ?",
+        "reference_answer": "An error is the logical mistke made by developer in the program",
+        "claude_response": "# Error in Software Testing\n\nAn **error** (also called a **mistake**) is a **human action** that produces an incorrect result during the software development process.\n\n## Key Characteristics:\n\n- **Made by humans**: Developers, designers, or other team members make errors\n- **Occurs during development**: Happens while writing code, designing systems, or creating documentation\n- **Root cause**: It's the initial mistake that leads to problems\n\n## Example:\nA programmer misunderstands a requirement and writes incorrect logic, or makes a typo in the code.\n\n---\n\n## Related Terms (Error-Defect-Failure Chain):\n\n1. **Error** \u2192 Human mistake\n2. **Defect/Bug/Fault** \u2192 The flaw in the code caused by the error\n3. **Failure** \u2192 When the defect causes the system to not work as expected during execution\n\n### Simple Example:\n- **Error**: Developer mistypes `i < 10` as `i < 1` (human mistake)\n- **Defect**: The loop only runs once instead of 10 times (flaw in code)\n- **Failure**: Application crashes or produces wrong output (visible problem)\n\n---\n\nUnderstanding this distinction helps teams identify root causes and implement better prevention strategies like code reviews, training, and improved requirements gathering.",
+        "evaluation_result": {
+            "overlap_words": [
+                "the",
+                "an",
+                "by",
+                "is",
+                "in",
+                "developer",
+                "error"
+            ],
+            "precision": 0.05185185185185185,
+            "recall": 0.6363636363636364
+        }
+    },
+    {
+        "question": "In software testing, what is a failure ?",
+        "reference_answer": "When bug is missed and identified in the final system then it is called failure",
+        "claude_response": "# Failure in Software Testing\n\nA **failure** is an observable deviation of the software's behavior from what is expected or required. It's what the user or tester actually experiences when something goes wrong.\n\n## Key Characteristics:\n\n- **External manifestation** - visible to users or testers\n- **Incorrect output** - wrong results, crashes, unexpected behavior\n- **Occurs during execution** - happens when the software is running\n\n## Important Distinctions:\n\n**Failure vs. Fault (Defect/Bug):**\n- **Fault**: The actual defect in the code (the root cause)\n- **Failure**: The observable consequence when that fault is triggered\n\n**Example:**\n- **Fault**: Missing validation in code (line 42: no null check)\n- **Failure**: Application crashes when user submits empty form\n\n## Common Types of Failures:\n\n1. **Functional** - Feature doesn't work as specified\n2. **Performance** - System too slow or unresponsive\n3. **Security** - Unauthorized access occurs\n4. **Usability** - Interface behaves unexpectedly\n\n## Note:\nNot every fault causes a failure (some defects may never be triggered), and not every failure is caused by a fault in the software being tested (could be environmental issues, hardware problems, etc.).",
+        "evaluation_result": {
+            "overlap_words": [
+                "when",
+                "system",
+                "the",
+                "is",
+                "in",
+                "failure",
+                "and"
+            ],
+            "precision": 0.05511811023622047,
+            "recall": 0.5
+        }
+    },
+    {
+        "question": "In software testing, what is a CR ?",
+        "reference_answer": "CR is change request usuallay made by clients when its underlying structure requires change and sent for approval once it is approved then dev will implement it",
+        "claude_response": "# CR in Software Testing\n\nIn software testing, **CR** most commonly stands for **Change Request**.\n\n## Common Meanings:\n\n### 1. **Change Request** (Most Common)\n- A formal proposal to modify a system, product, or document\n- Used to track requested changes to requirements, design, or functionality\n- Typically goes through an approval process before implementation\n- Often managed through a change control board or similar process\n\n### 2. **Code Review**\n- A systematic examination of source code\n- Identifies bugs, ensures quality, and improves code\n- Part of the quality assurance process\n\n### 3. **Defect/Bug Related:**\n- Sometimes used as shorthand for defect tracking in specific organizations\n- May indicate \"Critical\" or other severity ratings\n\n## Context Matters\n\nThe exact meaning can vary by organization, so it's best to clarify based on your specific context. In most formal software development environments, **Change Request** is the standard interpretation.\n\nIs there a specific context where you encountered this term?",
+        "evaluation_result": {
+            "overlap_words": [
+                "change",
+                "for",
+                "by",
+                "is",
+                "approval",
+                "and",
+                "cr"
+            ],
+            "precision": 0.061946902654867256,
+            "recall": 0.2916666666666667
+        }
+    }
+]

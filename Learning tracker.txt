@@ -630,4 +630,676 @@ git commit — actually save a snapshot, with a message describing what changed
 git push — upload that snapshot to GitHub
 
 
+1. What do git add, git commit, and git push each do?
+	git add : marks the files as ready, git commit : saves the snapshot and add the message sayinh what has changed, git push : actually pushes the code into the github.
+	
+2. Why did you never commit cred.txt or myenv/ to Git?
+	these are project specific files which may have sensitive data and we do not want to place these sensitive data into the public place.
+	
+3. What is a .gitignore file for?
+	This contains the files which are required to ignore while pushing the files into the github.
+	
+4. What is origin in the command git push -u origin master?
+	this tells local git repository about online repository location.
+	
+====================================================
+Day 16 : (Phase 1, Session 1) — What is an LLM? (No Maths)
+====================================================
+	
+	"Deep Dive into LLMs like ChatGPT" or "Intro to Large Language Models" by Andrej Karpathy
+	
+1. What does it mean that an LLM "predicts the next word"?
+	LLM predicts the next word based on it's trained data, trained data is the data which user has identified from the internet and convert that into machine readable format 
+	which is 0's and 1's but there exists a problem with huge numbers and user has less advantage of fitting more symbols into this, hence he converts that into bytes 
+	and identifies the patterns and replace these with the unique numbers there by fitting more symbols in it. now user takes this data and feed the neural networks and 
+	it gives the output based on randomness which we consider as prediction, this prediction can be wrong, each predication carries a score more the score more the accurate 
+	but it might be wrong as well. hence user tweaks the weight parameters to get the desired output so that prediction becomes consistent.
+	
+2. Why do LLMs hallucinate, at the mechanical level?
+	LLM gets hallucinates because of one major reason, it doesn't have mechanism like human brains to say NO to the question, it always gives the answers based on its trained data.
+	if LLM do not have any knowledge about the question asked it relies on its trained data and gives the answer which is close to the question which we considers as hallucination.
+	
+3. What is a context window, and what happens when a conversation exceeds it?
+	Context window is the amount of text a model can see at once, it can be your questions asked, answers and it's history. When it conversation exceeds beyond the context window it
+	drops the earlier conversation and start giving the answers to the information available in the current context window.
 
+====================================================
+Day 17 : Calling the Claude API from Python
+====================================================
+1. What does messages=[{"role": "user", "content": "..."}] remind you of from Day 4?
+	it is a list of dictionary containing one dictionary.
+	
+2. Why did a 12-word question turn into 22 tokens?
+	It is how the system treats the words into tokens, some words are considered as single token and some are broken into more than 1 token hence the token count varies.
+	
+3. What happens when a response hits max_tokens mid-generation?
+	response will be cut off in mid when response is too long and max tokens can't accomodate it.
+	
+4. Why does distinguishing "cut off" from "wrong answer" matter for evaluation work?
+	I have to evaluate based on the response hence, I should not wrongly assume that response is cutoff so it is a bad response 
+	instead I should check the max tokens set in the program before arriving to the response quality
+====================================================
+from dotenv import load_dotenv
+import os
+import anthropic
+
+load_dotenv()  # reads your .env file and loads its contents
+
+api_key = os.getenv("ANTHROPIC_API_KEY")  # pulls out just that one value by name
+client = anthropic.Anthropic(api_key=api_key) 
+
+response = client.messages.create( #the actual API call
+    model="claude-sonnet-4-5",
+    max_tokens=20,
+    messages=[
+        {"role": "user", "content": "What is the difference between a bug and a defect in QA?"}
+    ]
+)
+
+print(response.content[0].text)
+print(response.usage)
+====================================================
+
+====================================================
+Day 18 : Prompt Engineering in Code
+====================================================
+
+1. CONCEPT
+-----------
+You've been sending simple questions to Claude. Today you learn to deliberately shape how Claude responds by controlling three things: the system prompt
+(sets Claude's role/behavior), few-shot examples (showing Claude examples of the format you want), and temperature (controls randomness/creativity).
+
+The system parameter is separate from your messages list — it's not a conversation turn, it's a standing instruction that applies to the entire conversation.
+
+2. ANALOGY
+----------
+Think of the system prompt like the SOP (Standard Operating Procedure) document new testers receive on your team — before they ever look at a single ticket, 
+they know their role, tone, and constraints. Few-shot examples are like giving a new tester 2-3 sample bug reports formatted exactly the way you want, 
+so they replicate that format without being told line by line. Temperature is like telling that tester "just follow the checklist exactly" versus "use your judgment creatively."
+
+
+
+from dotenv import load_dotenv
+import os
+import anthropic
+
+load_dotenv()
+
+api_key = os.getenv("ANTHROPIC_API_KEY")
+client = anthropic.Anthropic(api_key=api_key)
+
+response = client.messages.create(
+    model="claude-sonnet-4-5",
+    max_tokens=300,
+    system="You are a strict senior QA engineer. Answer in exactly 3 bullet points, no more, no less.",
+    messages = [
+        {"role": "user", "content": "What should I check when testing a login page?"}
+    ]
+)
+print(response.content[0].text)
+
+--------------------
+Few-shot examples : 
+--------------------
+means showing Claude 1-2 examples of the exact output format you want, before asking your real question. Claude then follows that pattern.
+
+from dotenv import load_dotenv
+import os
+import anthropic
+
+load_dotenv()
+api_key = os.getenv("ANTHROPIC_API_KEY")
+client = anthropic.Anthropic(api_key=api_key)
+
+response = client.messages.create(
+    model="claude-sonnet-4-5",
+    max_tokens=300,
+    system="You are a QA engineer writing bug reports in this exact format: Title | Severity | Steps to Reproduce",
+    messages= [
+        {"role": "user", "content": "Example: Login button unresponsive | High | 1. Open login page 2. Click login 3. Nothing happens"},
+        {"role": "assistant", "content": "Understood. I will follow this exact format."},
+        {"role": "user", "content": "Now write a bug report for: search results page shows blank when no results found"}
+    ]
+)
+print(response.content)
+print("-------------------------------------------------------------")
+print(response.content[0].text)
+
+output : 
+----------
+PS C:\Users\govar\OneDrive\Documents\AI Test> python fewshot.py
+[TextBlock(citations=None, text='Search results page shows blank when no results found | Medium | 1. Navigate to search page 2. Enter query with no matching results 3. Page displays blank instead of "no results" message', type='text')]
+-------------------------------------------------------------
+Search results page shows blank when no results found | Medium | 1. Navigate to search page 2. Enter query with no matching results 3. Page displays blank instead of "no results" message
+PS C:\Users\govar\OneDrive\Documents\AI Test> 
+
+
+
+response.content → the list → [TextBlock(...)]
+response.content[0] → the first (only) item in that list → the TextBlock object itself
+response.content[0].text → reaching inside that object to get just the actual message text
+
+
+--------------------
+Temperature
+--------------------
+temperature is a number between 0 and 1 that controls how random or predictable Claude's word choices are.
+ Lower temperature = more focused, consistent, "safe" answers. Higher temperature = more varied, creative, sometimes unexpected answers.
+
+ANALOGY
+
+Think of it like telling a tester "follow the checklist exactly, 
+no deviation" (low temperature) versus "use your judgment, suggest creative edge cases I might not have thought of" (high temperature).
+
+1. What does the system parameter control, and where does it sit relative to messages?
+	system parameters controls the role and behavior of claude's response. it sits outside the messages.
+	
+2. What is a few-shot example, and why does faking an assistant turn work better than one long paragraph?
+	Giving one example to the claude so that it's response is close to the one what we are expecting it. 
+	it assumes the fake response as it's own response and mimics the next prediction as per the history.
+	
+3. What real risk did you identify about faking assistant messages?
+	We can influence the claude's response by injecting the fake response.
+	
+4. Why did temperature 0 and temperature 1 give such similar results in your test?
+	because it lies in the question what we asked, it is plain and simple and universal question where answer always remains more or less same even if change the temperature from 0 to	 1,
+	suppose if give more creative question of which we do not encounter in day to day life very easily then we can see the different answer for 0 and 1
+	
+==========================================================
+Day 19 tomorrow — Hugging Face: Load & Run a Model Locally
+==========================================================
+1. CONCEPT
+Hugging Face is like GitHub, but for AI models instead of code — a massive public repository where researchers and companies upload pretrained models anyone can download and run. 
+The transformers library is Hugging Face's Python tool for loading and running those models.
+
+2. ANALOGY
+
+Calling the Claude API is like calling a consulting firm and asking them to solve a problem — you send the question, they do the thinking on their infrastructure, you get back an answer. Running a Hugging Face model locally is like hiring that same expertise in-house — the model lives on your machine, uses your GPU, and you have full control.
+
+What pipeline() is
+A Hugging Face shortcut that bundles tokenization → model inference → result interpretation into one function call, so you don't have to manually wire those steps together.
+
+How classifier("your text") works internally
+
+Tokenizes your text (same concept as Day 16)
+Feeds tokens through the actual neural network
+Converts raw numeric output into a readable result like {"label": "NEGATIVE", "score": 0.998}
+
+Task name options for pipeline("...")
+----------							-------------------------------	
+Task Name							What It Does
+----------		                    -------------------------------			
+"sentiment-analysis"				Classifies text as positive/negative
+"summarization"						Shortens long text into a summary
+"translation_en_to_fr"				Translates English → French
+"text-generation"					Continues/completes given text
+"zero-shot-classification"			Classifies text into categories you define
+
+Choosing your own model (instead of the default)
+classifier = pipeline("sentiment-analysis", model="distilbert-base-uncased-finetuned-sst-2-english")
+
+
+example : 
+from  transformers import pipeline
+
+classifier = pipeline("sentiment-analysis")
+
+result = classifier("I love using Hugging Face's transformers library!")
+print("result : - ", result)
+print("-------------------------------------------------------------")
+print(result[0]['label'])
+
+result1 = classifier("I hate waiting in long lines at the grocery store.")
+print("result1 : - ", result1)
+print("-------------------------------------------------------------")
+print(result1[0]['label'])
+
+============
+practice : 
+============
+from transformers import pipeline
+
+user_comments = [
+    {"comment": "The search results page is not displaying any message when there are no results found. This can confuse users."},
+    {"comment": "The loading spinner is surprisingly fast."},
+    {"comment": "The error message for invalid input is very helpful."},
+    {"comment": "The pagination controls are intuitive to use but may be confusing for some users."},
+    {"comment": "The filter options are not clearly labeled."}
+]
+
+def analyze_comments(comments):
+    classifier = pipeline("sentiment-analysis")
+    for comment in comments:
+        result = classifier(comment["comment"])
+        print(comment["comment"], ": - ", result)
+
+analyze_comments(user_comments)
+        
+==========================================================
+Day 20 Ollama, running a local LLM on your RTX 5060?
+==========================================================
+Yesterday you ran a small, specialized model (sentiment classification only). Today you run a full conversational LLM — something that can hold a conversation, answer open questions, write code — entirely on your own machine, using your GPU, with zero API costs and zero internet dependency once downloaded.
+
+Ollama is a tool that makes running these large open-source models almost as simple as the Claude API — it handles all the complex setup (downloading, optimizing for your hardware, serving it locally) behind one simple command.
+
+2. ANALOGY
+
+If Hugging Face's pipeline() was like hiring a specialist for one narrow task (sentiment only), Ollama is like having a full general-purpose consultant living on your own machine — available any time, no per-question cost, but running on your own hardware's power instead of a data center's.
+
+ollama --version
+
+Then pull a small, capable model:
+ollama pull phi3:mini
+
+
+Day 20 Active Recall. No looking.
+
+1. What is the core difference between calling Claude's API and running Ollama locally?
+	Claude's API is like hiring the consultant to do our job where as Ollama is like having ready to serve consultant sitting at home. claude consultant charges per every service he does whereas ollama is like our family member he does it for free of cost as he is staying in our home. no extra cost is involved. just feed him CPU, GPU usage that is all it takes.
+	
+2. Why did Ollama require requests.post() instead of the anthropic library?
+	requests.post() is a method used to call it's inbuild functions available in the downloaded models which are running in the local server whereas anthropic is outside server one has to call using api_key there by authenticating oneself to the anthropic servers.
+	
+3. What two different "quality dimensions" did you identify when comparing the two responses?
+	Calude's response was neat and clean and segregates the various types of testing with small example for the user whereas the ollama's response was lengthy but user review is more as the test scenarios are too lengthy and one has to read them completely to arrive at the conclusion about what it is doing.
+	
+4. Why did Claude's response get cut off mid-sentence?
+	It is due to max_tokens configuration in the program.
+	
+==========================================================
+Day 21 What is RAG? Plain English
+==========================================================
+
+RAG : Retrieval Augumented Generation.
+Here it solves the most important problem.
+LLM knows only the information which is trained at that cut off time. it doesn't know our own data like our company's related or project specific information.
+
+R : Retreival -> It searches the private collection of documents which finds the most relevant pieces of text related to the user question.
+Generation : These relevant pieces of information is handed over to the LLM, Now LLM has the information from both the user and from the trained data so, it gives the output relevant to the users request rather than generic output.
+
+ANALOGY :
+==============
+Think of an LLM without RAG like an extremely knowledgeable consultant who’s read everything publicly available up to a certain date, but has never seen your company’s internal test case database. If you ask them “what’s TC-2847 about,” they’d have to guess or admit they don’t know.
+
+RAG is like handing that consultant your test case spreadsheet first, flipping to the exact relevant page, and saying “read this page, then answer.” They still provide the expertise and reasoning — they just now have the right source material in front of them.
+
+
+
+Here’s the key question: imagine your private database has 10,000 test cases stored in it. The user asks “what does TC-2847 do.” The system can’t hand all 10,000 test cases to the LLM every time — that would blow past the context window you learned about on Day 16, and cost a fortune in tokens.
+
+So how does the system decide which handful of test cases, out of those 10,000, are actually relevant to this specific question, before handing anything to the LLM?
+
+Embeddings — every piece of text (your test cases, and the user’s question) gets converted into a list of numbers (a “vector”) that represents its meaning, not just its exact words. Two sentences with similar meaning end up with similar numbers, even if they don’t share a single identical word.
+
+Vector search — the database compares the question’s numbers against all 10,000 stored test cases’ numbers, and finds the ones that are mathematically “closest” in meaning. That’s your “semantic matching.”
+
+So the full corrected flow is:
+
+User asks a question
+The question gets converted into an embedding (numbers)
+The vector database (ChromaDB in your case) compares that embedding against all stored embeddings, finds the top few closest matches
+Those matching chunks of text — not the whole database — get inserted into the prompt sent to the LLM
+The LLM generates an answer using those specific retrieved chunks as context
+
+
+
+
+1. What problem does RAG actually solve?
+	Without RAG system, LLM only knows about the information on which it got trained till the cut off date. Suppose if user wants to write the functional test cases for any specific user story for a certain project, LLM do not know about the project or any existing test cases hence it will give the generic test cases instead of project specific test cases. With the RAG, LLM will come to know about the context of project and takes this as context along with the user's question and generates the response which is now enriched with the project specific data.
+	
+2. What is an embedding?
+	Every piece of information which is our question and the context which we are going to add is gets converted into numbers (vectors) these numbers are called embeddings.
+	
+3. What does vector search do with those embeddings?
+	Vector search typically takes the user question which is again a embedding and searches the vector db where it has closest mathematical number match and fetches the top most matching embeddings and adds along with the user specific question to enahnce the output.
+	
+4. Where do the retrieved chunks of text actually get placed in the API call?
+	Retrieved chunks of text gets added into the user's message.
+	
+==========================================================
+Day 22 building a tiny RAG pipeline?
+==========================================================
+
+3 new libraries we use here.
+
+1. sentence transformers : - Converts the text into embeddings (numbers)
+2. chroma DB: - Database where the above embeddings are stored and perform vector search.
+3. Anthropic LLM : - Actuall LLM.
+
+
+1. What is chromadb.Client()?
+	It creates the connection to chromadb. Without parameters it establishes the temporary connection and it gets wiped out as soon as program stops running.
+
+2. What is create_collection() and why the parameter?
+	it is just like named table in the database here it is named folder which contains the similar documents. The name what we are passing inside is the name we are giving it to these similar documents which we are going to refer it later.
+	
+3. Why documents and why ids?
+	documents : Documents is the actual chunks you want chromadb to store and search over it in later times
+	ids : ids are required to refer the stored document in the chromadb they are essentially like primary keys in the DB table.
+	
+4. How many functions exist, and which matter most?
+	ChromaDB’s collection object has quite a few methods, but for your purposes right now, these 4 cover almost everything you’ll need:
+
+------------------------	
+Method		Purpose
+------------------------
+.add()		Store new documents with embeddings
+.query()	Search for the most similar documents to a given text
+.count()	How many documents are currently stored
+.get()		Retrieve specific documents by their IDs, without searching
+
+import chromadb
+
+client = chromadb.Client()
+collection = client.create_collection(name ="testcases")
+
+collection.add(
+    documents=["Test case 1: Verify login functionality with valid credentials.",
+               "Test case 2: Verify login functionality with invalid credentials.",
+               "Test case 3: Verify password reset functionality.",
+               "Test case 4: Verify account lockout after multiple failed login attempts.",
+               "Test case 5: Verify login page UI elements and responsiveness."
+               ],
+    ids=["TC01", "TC02", "TC03", "TC04", "TC05"]
+)
+
+print("Collection created and test cases added successfully.")
+print("Total documents in the collection:", collection.count())  # Print the total number of documents in the collection
+print("Documents in the collection:", collection.get())  # Print the documents in the collection
+
+results= collection.query(
+    query_texts=["What happens if someone enters the wrong password?"],
+    n_results=2
+)
+
+print("Query results:", results)
+
+---------------------------------------
+from dotenv import load_dotenv
+import os
+import anthropic
+import chromadb
+
+load_dotenv()
+api_key = os.getenv("ANTHROPIC_API_KEY")  # Ensure the API key is loaded from the environment variables
+anthropic_client = anthropic.Anthropic(api_key=api_key)
+
+user_question = "What happens if someone enters the wrong password?"
+
+
+
+client = chromadb.Client()
+collection = client.create_collection(name ="testcases")
+
+collection.add(
+    documents=["Test case 1: Verify login functionality with valid credentials.",
+               "Test case 2: Verify login functionality with invalid credentials.",
+               "Test case 3: Verify password reset functionality.",
+               "Test case 4: Verify account lockout after multiple failed login attempts.",
+               "Test case 5: Verify login page UI elements and responsiveness."
+               ],
+    ids=["TC01", "TC02", "TC03", "TC04", "TC05"]
+)
+
+results = collection.query(query_texts=[user_question], n_results=2)
+retrieved_docs = results["documents"][0]
+
+context = "\n".join(retrieved_docs)  # Combine the retrieved documents into a single context string
+
+prompt = f"""Context :
+{context}
+question : {user_question}
+answer the question based on the context provided. If the answer is not present in the context, say "I don't know".
+"""
+response = anthropic_client.messages.create(
+    model="claude-sonnet-4-5", 
+    max_tokens=400,
+    messages=[{"role": "user", "content": prompt}]
+)
+
+print("=== RAG LLM Response ===")
+print(response.content[0].text)
+
+
+==========================================================
+Day 23 tomorrow — Evaluation Concepts: Precision, Recall, F1
+==========================================================
+
+True positive (TP) : Predicted high priority and it is actually high priority. (correct)
+False positive (FP) : Predicted high priority but it is actually NOT high priority (Incorrect)
+false negative (FN) : Predicted as NOT high Priority but it is high priority (Incorrect)
+true negative (TN) : Predicted as not high priority and it is NOT high priority (Correct)
+
+Precision : TP/(TP+FP) : Of everything I predicted as high priority how much was actually correct.
+Recall : TP/(TP+FN) : Of everything of actuall high priority how much did I catch.
+(of all the bugs that actually exist in the system, how many did you successfully find and report?)
+F1 score : balances the precision and recall into combined number.
+
+Precision is about the accuracy of what you already flagged,
+Recall is about how much of the real problem you actually uncovered, including things you might have completely missed?
+
+
+def calculate_precision_recall(predicted, actual):
+    true_positive = 0
+    false_positive = 0
+    false_negative = 0
+
+    for item in predicted:
+        if item in actual:
+            true_positive += 1
+        else:
+            false_positive += 1
+
+    for item in actual:
+        if item not in predicted:
+            false_negative += 1
+
+    precision = true_positive / (true_positive + false_positive)
+    recall = true_positive / (true_positive + false_negative)
+
+    return {"precision": precision, "recall": recall, "tp": true_positive, "fp": false_positive, "fn": false_negative}
+
+
+predicted_bugs = ["BUG-101", "BUG-102", "BUG-103"]
+actual_critical_bugs = ["BUG-101", "BUG-102", "BUG-104"]
+
+result = calculate_precision_recall(predicted_bugs, actual_critical_bugs)
+print(result)
+
+Precision : TP/(TP+FP)
+Recall : TP(TP+FN)
+
+TP : 2
+FP : 1
+FN: 1
+
+for item in actual:
+    if item not in predicted:
+        false_negative += 1for item in actual:
+    if item not in predicted:
+        false_negative += 1
+
+
+This loop goes through actual_critical_bugs — the real, true list: ["BUG-101", "BUG-102", "BUG-104"]. For each one, it checks: is this bug missing from your predicted_bugs list?
+
+Walk through each item in actual_critical_bugs one at a time:
+
+Is "BUG-101" in predicted_bugs?
+Is "BUG-102" in predicted_bugs?
+Is "BUG-104" in predicted_bugs?
+
+Answer each, then tell me what FN equals.
+
+Exactly right. BUG-104 is a real critical bug that exists in actual_critical_bugs, but it never appears in predicted_bugs — meaning you missed it entirely. That’s your one false negative.
+
+So: FN = 1.
+
+Now calculate Precision and Recall yourself, using the formulas from earlier:
+
+Precision = TP / (TP + FP)
+Recall = TP / (TP + FN)
+
+Work them out by hand with TP=2, FP=1, FN=1.
+
+
+Precision by definition is actually the accuracy of what already covered. example, Of all the reported bugs how many are actually bugs is the precision.
+Recall by definition is how much the real problem actually uncovered including the one you have missed? example: of all the bugs that actually exist, how many did I find.
+F1 score by harmonic mean exposes the system's failure , it will not hide the true failures whereas the average hides the failures and gives the false positive and illustrates that system score is good
+
+================================
+Day 24 tomorrow — BLEU & ROUGE: Text Quality Metrics.
+==================================================
+Precision, Recall, and F1 work great when you’re comparing discrete items — bug IDs, pass/fail labels, categories. But what happens when you need to evaluate generated text itself — like comparing an AI-written summary against a human-written reference summary? You can’t ask “is this bug ID correct or not.” You need to measure how similar two pieces of text are.
+
+BLEU (originally built for translation quality) and ROUGE (originally built for summarization quality) solve this by comparing overlapping words/phrases between a generated text and a reference text.
+
+BLEU — focuses on precision: of all the words/phrases the generated text produced, how many actually appear in the reference?
+ROUGE — focuses on recall: of all the words/phrases in the reference text, how many did the generated text actually capture?
+
+Notice — this is the same precision/recall concept from yesterday, just applied to words instead of bug IDs.
+
+2. ANALOGY
+
+Imagine comparing a tester’s bug report summary against your own “gold standard” summary of the same bug. BLEU asks: “of everything the tester wrote, how much matches my reference?” ROUGE asks: “of everything in my reference, how much did the tester’s version actually capture?” Same precision/recall tension as before — a tester could write a short, highly accurate summary (high BLEU, low ROUGE if they left things out) or a long, comprehensive one that includes everything but also extra fluff (high ROUGE, lower BLEU).
+
+#Day 24 tomorrow — BLEU & ROUGE: Text Quality Metrics.
+
+def calculate_bleu(generated, reference):
+    generated_words = reference.lower().split()
+    reference_words = generated.lower().split()
+
+    generated_set = set(generated_words)
+    reference_set = set(reference_words)
+    overlap = generated_set.intersection(reference_set)
+
+    precision_like_bleu = len(overlap) / len(generated_set)
+    recall_like_rouge = len(overlap) / len(reference_set)
+
+    return {"overlap_words": overlap, "precision": precision_like_bleu, "recall": recall_like_rouge}
+
+result = calculate_bleu("The cat sat on the mat", "The cat is on the mat")
+print(result)
+
+1. What does BLEU fundamentally measure, in relation to precision from yesterday?
+	BLEU : This is actually accuracy. of all the words/phrases the generated text how much are present in the reference text.
+	
+2. What does ROUGE fundamentally measure, in relation to recall from yesterday?
+	This is actually the recall. of all the words/phrases of the reference text how much did generated text captured.
+	
+3. Why did "The" and "the" get counted as different words before you added .lower()?
+	before .lower(), The and the are treated as 2 separate words hence they are counted as 2 words.
+	
+4. Why must .lower() be called before .split(), not after?
+	It's chain of order, after split we have list of words and can't apply the .lower() function on it, before that it is full string so we can easily apply the .lower() and then split it
+	
+======================================================
+Day 25 tomorrow — Hallucination Detection
+===============================================
+
+#Day 25 tomorrow — Hallucination Detection
+from dotenv import load_dotenv
+import os
+import anthropic
+
+load_dotenv()
+api_key =  os.getenv("ANTHROPIC_API_KEY")
+client = anthropic.Anthropic(api_key=api_key)
+
+hallucination_test_prompt = """What did Andrej Karpathy say in his 2019 paper about transformer context windows exceeding 1 million tokens?"""
+
+response = client.messages.create(
+    model="claude-sonnet-4-5",
+    max_tokens = 400,
+    messages=[
+        {
+            "role": "user",
+            "content": hallucination_test_prompt
+        }
+    ]
+)
+#print (response.content[0])
+print (response.content[0].text)
+
+
+1. Why did Claude catch your Jackassium scenario easily, but struggle more with the Karpathy scenario?
+	the first one is deliberately added the sarcastic names which makes model to easily recognize the names which are not real where the 2nd one user has added the genuine data with carefully binding the unreal data in it which makes LLM little suspicious to find it.
+	
+2. What’s the real difference between direct fact-checking and indirect plausibility reasoning?
+	direct fact-checking means Claude references actual known facts/documents directly; indirect reasoning means Claude has no direct fact to check against, so it falls back to context clues — like technical feasibility for a given time period — to judge plausibility.
+	
+3. Why is hallucination still considered an unsolved problem?
+	There are endless possibilities to include and bind the information into the prompt which makes LLM hard to stop hallucination
+
+
+
+===============================================
+Day 26 Mini Eval Project (Phase 1 Capstone)
+===============================================
+#Day 26 Mini Eval Project (Phase 1 Capstone)
+from dotenv import load_dotenv
+import os
+import anthropic
+import json
+load_dotenv()
+
+api_key =  os.getenv("ANTHROPIC_API_KEY")
+client = anthropic.Anthropic(api_key=api_key)
+
+qa_questions = [
+{"question" : "In software testing,what is a bug ?","reference_answer" : "A bug is deviation from expected and actual behvaior of the system"},
+{"question" : "In software testing, what is a defect ?","reference_answer" : "When bug reported by tester and accepted by development team"},
+{"question" : "In software testing, what is a error ?","reference_answer" : "An error is the logical mistke made by developer in the program"},
+{"question" : "In software testing, what is a failure ?","reference_answer" : "When bug is missed and identified in the final system then it is called failure"},
+{"question" : "In software testing, what is a CR ?","reference_answer" : "CR is change request usuallay made by clients when its underlying structure requires change and sent for approval once it is approved then dev will implement it"}
+]
+
+def evaluate_response(qa):
+        reference_words = qa["reference_answer"].lower().split()
+        generated_words = qa["claude_response"].lower().split()
+        generated = set(generated_words)
+        reference = set(reference_words)
+        overlap = generated.intersection(reference)
+        precision_like_bleu = len(overlap) / len(generated)
+        recall_like_rouge = len(overlap) / len(reference)
+        return {"overlap_words": overlap, "precision": precision_like_bleu, "recall": recall_like_rouge}
+
+for qa in qa_questions:
+    question = qa["question"]
+    
+    response = client.messages.create(
+        model="claude-sonnet-4-5",
+        max_tokens=800,
+        messages=[
+            {
+                "role": "user",
+                "content": question
+            }
+        ]
+    )
+    
+    generated_answer = response.content[0].text
+    qa["claude_response"]=generated_answer
+    #print(f"Question: {question}")
+    #print(f"Generated Answer: {generated_answer}")
+    #print("-" * 50)
+
+for item in qa_questions:
+        evaluation_result = evaluate_response(item)
+        item["evaluation_result"] = evaluation_result
+
+with open("eval_scorecard.json", "w") as file:
+       json.dump(qa_questions, file, indent=4,default=list)
+print("Scorecard saved to eval_scorecard.json")
+
+
+1. Why was precision so low across all 5 questions, even though Claude’s answers were accurate?
+	reference answers were short and hence we have very few overlapping words whereas in claude's response we have very lenghty and detailed answers and hence when we calculate the BLeu WHICH is len(overlap)/len(generated_set) results is smaller number. 
+	
+2. What did this reveal about where the actual problem was — the model, or the test design?
+	The problem obviously lies in the users data set, this data set has to be enriched to get the decent bleu and rougue scores.
+	
+3. What’s one concrete fix you’d make to your reference dataset to get fairer scores?
+	I will add more detailed answers rather than adding the single line of statements.
+	
+4. Looking back across all of Phase 1 — name one moment where you predicted something wrong, and what you learned from being wrong.
+	 I predicted that, based on the bleu scores I did not come to conclusion that, LLM models are performing poorly rather I looked inward and checked the user's dataset and came to know that, this has to be improved inorder to judge the model's response rather than simply looking at the scores and coming to conclusions

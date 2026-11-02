@@ -1,0 +1,35 @@
+1. What data structure will hold your 5-10 questions? (Think back to Day 4/7 — what shape made sense for structured records?)
+Ans : List
+
+2. For each question, what will you actually score — the length of response? Overlap with some reference answer? Whether it contains hallucination-trigger words?
+Ans : first we capture length of the response, and its overlap against the reference text and finally checking the answers have any hallucination information.
+
+3. What will the final “scorecard” look like — what fields will it contain, and in what format will you save it?
+Ans : scorecard has bleu, rouge values , we can also add overlap words, I can save it dictionary	
+
+
+[
+{"question" : "what is a bug ?","reference_answer" : "A bug is deviation from expected and actual behvaior of the system"},
+{"question" : "what is a defect ?","reference_answer" : "When bug reported by tester and accepted by development team"},
+{"question" : "what is a error ?","reference_answer" : "An error is the logical mistke made by developer in the program"},
+{"question" : "what is a failure ?","reference_answer" : "When bug is missed and identified in the final system then it is called failure"},
+{"question" : "what is a CR ?","reference_answer" : "CR is change request usuallay made by clients when its underlying structure requires change and sent for approval once it is approved then dev will implement it"}
+]
+
+
+step 1 : Loop this questions.
+
+qa_questions = [
+{"question" : "what is a bug ?","reference_answer" : "A bug is deviation from expected and actual behvaior of the system"},
+{"question" : "what is a defect ?","reference_answer" : "When bug reported by tester and accepted by development team"},
+{"question" : "what is a error ?","reference_answer" : "An error is the logical mistke made by developer in the program"},
+{"question" : "what is a failure ?","reference_answer" : "When bug is missed and identified in the final system then it is called failure"},
+{"question" : "what is a CR ?","reference_answer" : "CR is change request usuallay made by clients when its underlying structure requires change and sent for approval once it is approved then dev will implement it"}
+]
+
+
+def eval_fun(qa_questions):
+	for item in qa_questions:
+		
+		
+	
